@@ -1,3 +1,3 @@
 # Takasbuback
-rightnow I am trying to finish user then I am gonna add the product model and controller than it would be done 
-Its backend of the takasbu project it is dead nowadays but I am pretty sure that i will finish the project
+currently I am done with user but I have little bit issue with product but I am pretty sure that I will finish everything and I think the project I gave me the 
+power of pratice I think
