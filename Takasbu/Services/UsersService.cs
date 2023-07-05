@@ -17,10 +17,10 @@ public class UsersService
             UserStoreDatabaseSettings.Value.ConnectionString);
 
         var mongoDatabase = mongoClient.GetDatabase(
-            "BookStore");
+            UserStoreDatabaseSettings.Value.DatabaseName);
 
         _UsersCollection = mongoDatabase.GetCollection<User>(
-            "Users");
+          UserStoreDatabaseSettings.Value.UsersCollectionName);
     }
     // </snippet_ctor>
 
@@ -37,7 +37,8 @@ public class UsersService
 
     public async Task UpdateAsync(string id, User updatedUser) =>
         await _UsersCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
-
+      public async Task UpdateAsyncu(string id, User updatedUser) =>
+        await _UsersCollection.ReplaceOneAsync(x => x.Username == id, updatedUser);
     public async Task RemoveAsync(string id) =>
         await _UsersCollection.DeleteOneAsync(x => x.Id == id);
 }

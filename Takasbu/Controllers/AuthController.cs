@@ -21,10 +21,14 @@ namespace Takasbu.Controllers
        private readonly AuthService _AuthService;
         private readonly UsersService _UsersService;
 
+         private readonly ProductService _ProductService;
+
         public static User user = new User();
+        public static Product product = new Product();
         private readonly IConfiguration _configuration;
-        public AuthController(IConfiguration configuration, UsersService UsersService,AuthService authService)
-        {
+        public AuthController(IConfiguration configuration, UsersService UsersService,AuthService authService,ProductService ProductService)
+        {  
+           _ProductService = ProductService;
             _AuthService = authService;
             _UsersService = UsersService;
             _configuration = configuration;
@@ -69,22 +73,73 @@ namespace Takasbu.Controllers
 
             return Ok(token);
         }
-        [HttpPost("something")]
-        public async Task<ActionResult<string>> something(string a)
+
+
+
+          [HttpPut("Updatebio")]
+        public async Task<ActionResult<string>> biochange(string username,string newbio)
         {
-               var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
-               var token = _AuthService.GetUserIdFromToken(_bearer_token!);
-              var user = await _UsersService.GetAsyncu(token!);
-              
-              Console.WriteLine(_bearer_token);
+            if(aut(username)){
+             var users = await _UsersService.GetAsync();
 
+            var user = users.FirstOrDefault(u => u.Username == username);
+            user!.Bio = newbio;
+            Console.WriteLine(user!.Bio);
+            await _UsersService.UpdateAsyncu(user.Username,user);
 
-            return Ok(user);
+           
+
+            return Ok();
+
+            }
+             return BadRequest();
+
+         
         }
+    
+       [HttpPost("CreateProduct")]
+        public async Task<ActionResult<string>> CreateProduct(ProductDTO request)
+        {
+              var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+              var token = _AuthService.GetUserIdFromToken(_bearer_token!);
+               var users = await _UsersService.GetAsync();
+            var user = users.FirstOrDefault(u => u.Username == token);
+              if(token==null|| user==null){
+                return BadRequest("Token or User cant found");
+
+              }
+             product.Name=request.Name;
+             product.Category = request.Category;
+             product.Description = request.Description;
+             product.Price = request.Price;
+             product.Owner = token;
+              await _ProductService.CreateAsync(product);
+             user.ProductIds.Add(product.Id);
+             await _UsersService.UpdateAsync(user.Id,user);
+
+        
+
+            return Ok("created");
+        }
+
+
+       
 
 
 
         //private methods
+        private bool aut(string UserName)
+        {
+               var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+               var token = _AuthService.GetUserIdFromToken(_bearer_token!);
+              
+              if(UserName==token){
+                return true;
+              }
+            
+            return false;
+                  
+        }
 
     }
 }
