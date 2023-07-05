@@ -25,5 +25,7 @@ jobs:
       working-directory: Takasbu/
     - name: Build
       run: dotnet build --no-restore
+      working-directory: Takasbu/
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: Takasbu/
