@@ -49,10 +49,6 @@
               "target": "Package",
               "version": "[7.0.4, )"
             },
-            "Microsoft.IdentityModel": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            },
             "MongoDB.Driver": {
               "target": "Package",
               "version": "[2.20.0, )"

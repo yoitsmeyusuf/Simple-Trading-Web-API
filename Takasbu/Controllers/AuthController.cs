@@ -121,6 +121,23 @@ namespace Takasbu.Controllers
 
             return Ok("created");
         }
+        [HttpGet("GetProducts")]
+        public async Task<ActionResult<string>> GeTProducts()
+        {
+              var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+              var token = _AuthService.GetUserIdFromToken(_bearer_token!);
+               var users = await _UsersService.GetAsync();
+            var user = users.FirstOrDefault(u => u.Username == token);
+              if(token==null|| user==null){
+                return BadRequest("Token or User cant found");
+
+              }
+          var result =  await _ProductService.GetListAsync(user.ProductIds);
+
+        
+
+            return Ok(result);
+        }
 
 
        

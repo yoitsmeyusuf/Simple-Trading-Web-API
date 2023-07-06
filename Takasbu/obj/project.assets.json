@@ -99,15 +99,6 @@
           }
         }
       },
-      "Microsoft.IdentityModel/7.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35/microsoft.identitymodel.dll": {}
-        },
-        "runtime": {
-          "lib/net35/microsoft.identitymodel.dll": {}
-        }
-      },
       "Microsoft.IdentityModel.Abstractions/6.31.0": {
         "type": "package",
         "compile": {
@@ -971,18 +962,6 @@
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec"
-      ]
-    },
-    "Microsoft.IdentityModel/7.0.0": {
-      "sha512": "55LP0/gF3OAGhPNw/QxJs9q72xyS8rJ4ndZJC+GMSEjARh4hPmGVet2Oa9B8p8KKl3g8u3e+mh6WoBoUa0AiAA==",
-      "type": "package",
-      "path": "microsoft.identitymodel/7.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net35/microsoft.identitymodel.dll",
-        "microsoft.identitymodel.7.0.0.nupkg.sha512",
-        "microsoft.identitymodel.nuspec"
       ]
     },
     "Microsoft.IdentityModel.Abstractions/6.31.0": {
@@ -1852,7 +1831,6 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.AspNetCore.OpenApi >= 7.0.4",
-      "Microsoft.IdentityModel >= 7.0.0",
       "MongoDB.Driver >= 2.20.0",
       "Swashbuckle.AspNetCore >= 6.4.0",
       "System.IdentityModel.Tokens.Jwt >= 6.31.0"
@@ -1907,10 +1885,6 @@
             "target": "Package",
             "version": "[7.0.4, )"
           },
-          "Microsoft.IdentityModel": {
-            "target": "Package",
-            "version": "[7.0.0, )"
-          },
           "MongoDB.Driver": {
             "target": "Package",
             "version": "[2.20.0, )"
@@ -1946,17 +1920,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "'Microsoft.IdentityModel 7.0.0' paketi, proje hedef çerçevesi 'net7.0' yerine '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' kullanılarak geri yüklendi. Bu paket projenizle tamamen uyumlu olmayabilir.",
-      "libraryId": "Microsoft.IdentityModel",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    }
-  ]
+  }
 }

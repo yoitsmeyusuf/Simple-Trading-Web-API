@@ -9,7 +9,6 @@
       "Takasbu/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "7.0.4",
-          "Microsoft.IdentityModel": "7.0.0",
           "MongoDB.Driver": "2.20.0",
           "Swashbuckle.AspNetCore": "6.4.0",
           "System.IdentityModel.Tokens.Jwt": "6.31.0"
@@ -62,14 +61,6 @@
       "Microsoft.CSharp/4.5.0": {},
       "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
       "Microsoft.Extensions.Logging.Abstractions/2.0.0": {},
-      "Microsoft.IdentityModel/7.0.0": {
-        "runtime": {
-          "lib/net35/microsoft.identitymodel.dll": {
-            "assemblyVersion": "3.5.0.0",
-            "fileVersion": "6.1.7601.24479"
-          }
-        }
-      },
       "Microsoft.IdentityModel.Abstractions/6.31.0": {
         "runtime": {
           "lib/net6.0/Microsoft.IdentityModel.Abstractions.dll": {
@@ -356,13 +347,6 @@
       "sha512": "sha512-6ZCllUYGFukkymSTx3Yr0G/ajRxoNJp7/FqSxSB4fGISST54ifBhgu4Nc0ItGi3i6DqwuNd8SUyObmiC++AO2Q==",
       "path": "microsoft.extensions.logging.abstractions/2.0.0",
       "hashPath": "microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512"
-    },
-    "Microsoft.IdentityModel/7.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-55LP0/gF3OAGhPNw/QxJs9q72xyS8rJ4ndZJC+GMSEjARh4hPmGVet2Oa9B8p8KKl3g8u3e+mh6WoBoUa0AiAA==",
-      "path": "microsoft.identitymodel/7.0.0",
-      "hashPath": "microsoft.identitymodel.7.0.0.nupkg.sha512"
     },
     "Microsoft.IdentityModel.Abstractions/6.31.0": {
       "type": "package",

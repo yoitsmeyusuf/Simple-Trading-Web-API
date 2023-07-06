@@ -9,7 +9,6 @@ C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\AWSSDK.Core.dll
 C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\AWSSDK.SecurityToken.dll
 C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\DnsClient.dll
 C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\microsoft.identitymodel.dll
 C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
 C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\win10\Desktop\Takasbuback\Takasbu\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll

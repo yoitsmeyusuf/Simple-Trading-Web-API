@@ -29,6 +29,12 @@ public class ProductService
 
     public async Task<Product?> GetAsync(string id) =>
         await _ProductsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+  public async Task<List<Product>> GetListAsync(List<string> ids)
+{
+    var filter = Builders<Product>.Filter.In(x => x.Id, ids);
+    var result = await _ProductsCollection.Find(filter).ToListAsync();
+    return result;
+}
           public async Task<Product?> GetAsyncu(string id) =>
         await _ProductsCollection.Find(x => x.Name == id).FirstOrDefaultAsync();
 
