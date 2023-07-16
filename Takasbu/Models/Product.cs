@@ -14,6 +14,10 @@ public class Product
      [JsonPropertyName("Name")]
     public  string Name { get; set; } = string.Empty;
 
+      [BsonElement("Picture")]
+        [JsonPropertyName("Picture")]
+        public string Picture{ get; set; } = string.Empty;
+
     [BsonElement("Price")]
      [JsonPropertyName("Price")]
     public decimal Price { get; set; }

@@ -29,15 +29,15 @@ public class UsersService
 
     public async Task<User?> GetAsync(string id) =>
         await _UsersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
-          public async Task<User?> GetAsyncu(string id) =>
-        await _UsersCollection.Find(x => x.Username == id).FirstOrDefaultAsync();
+    public async Task<User?> GetAsync(string Username,bool Usernameusing) =>
+        await _UsersCollection.Find(x => x.Username == Username).FirstOrDefaultAsync();
 
     public async Task CreateAsync(User newUser) =>
         await _UsersCollection.InsertOneAsync(newUser);
 
     public async Task UpdateAsync(string id, User updatedUser) =>
         await _UsersCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
-      public async Task UpdateAsyncu(string id, User updatedUser) =>
+      public async Task UpdateAsync(string id, User updatedUser,bool Usernameusing) =>
         await _UsersCollection.ReplaceOneAsync(x => x.Username == id, updatedUser);
     public async Task RemoveAsync(string id) =>
         await _UsersCollection.DeleteOneAsync(x => x.Id == id);

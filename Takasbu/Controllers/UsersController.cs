@@ -33,12 +33,31 @@ public class UsersController : ControllerBase
     
 
     [HttpPost]
-    public async Task<IActionResult> Post(User newUser)
+public async Task<IActionResult> Post(User newUser, IFormFile file)
+{
+    if (file != null && file.Length > 0)
     {
-        await _UsersService.CreateAsync(newUser);
+        // Generate a unique file name or use the original file name
+         string originalFileName = file.FileName; // Assuming you have the original file name
+                string extension = Path.GetExtension(originalFileName);
+                string fileName = Guid.NewGuid().ToString() + extension;
 
-        return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+
+        // Set the file path where you want to save the uploaded files
+        string filePath = Path.Combine(@"C:\pictures", fileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(fileStream);
+        }
+
+        newUser.Picture = fileName;
     }
+
+    await _UsersService.CreateAsync(newUser);
+
+    return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+}
 
     [HttpPut]
     public async Task<IActionResult> Update(string id, User updatedUser)

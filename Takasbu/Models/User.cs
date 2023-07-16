@@ -11,6 +11,10 @@ namespace Takasbu.Models
        [BsonId]
        [BsonRepresentation(BsonType.ObjectId)]
        public string Id { get; internal set; } = string.Empty;
+
+        [BsonElement("Picture")]
+        [JsonPropertyName("Picture")]
+        public string Picture{ get; set; } = string.Empty;
        
 
        [BsonElement("Name")]

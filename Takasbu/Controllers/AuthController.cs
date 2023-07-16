@@ -18,17 +18,17 @@ namespace Takasbu.Controllers
     {
 
 
-       private readonly AuthService _AuthService;
+        private readonly AuthService _AuthService;
         private readonly UsersService _UsersService;
 
-         private readonly ProductService _ProductService;
+        private readonly ProductService _ProductService;
 
         public static User user = new User();
         public static Product product = new Product();
         private readonly IConfiguration _configuration;
-        public AuthController(IConfiguration configuration, UsersService UsersService,AuthService authService,ProductService ProductService)
-        {  
-           _ProductService = ProductService;
+        public AuthController(IConfiguration configuration, UsersService UsersService, AuthService authService, ProductService ProductService)
+        {
+            _ProductService = ProductService;
             _AuthService = authService;
             _UsersService = UsersService;
             _configuration = configuration;
@@ -44,16 +44,17 @@ namespace Takasbu.Controllers
             var users = await _UsersService.GetAsync();
             var userg = users.FirstOrDefault(u => u.Username == request.Username);
 
-            if(userg==null){
-               _AuthService.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            if (userg == null)
+            {
+                _AuthService.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.Username = request.Username;
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            await _UsersService.CreateAsync(user);
-            return Ok(user);
+                user.Username = request.Username;
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                await _UsersService.CreateAsync(user);
+                return Ok(user);
             }
-          return  BadRequest("There is a same Username with a user");
+            return BadRequest("There is a same Username with a user");
         }
 
 
@@ -76,86 +77,141 @@ namespace Takasbu.Controllers
 
 
 
-          [HttpPut("Updatebio")]
-        public async Task<ActionResult<string>> biochange(string username,string newbio)
+        [HttpPut("Updatebio")]
+        public async Task<ActionResult<string>> biochange(string username, string newbio)
         {
-            if(aut(username)){
-             var users = await _UsersService.GetAsync();
+            if (aut(username))
+            {
+                var users = await _UsersService.GetAsync();
 
-            var user = users.FirstOrDefault(u => u.Username == username);
-            user!.Bio = newbio;
-            Console.WriteLine(user!.Bio);
-            await _UsersService.UpdateAsyncu(user.Username,user);
+                var user = users.FirstOrDefault(u => u.Username == username);
+                user!.Bio = newbio;
+                Console.WriteLine(user!.Bio);
+                await _UsersService.UpdateAsync(user.Username, user, true);
 
-           
 
-            return Ok();
+
+                return Ok();
 
             }
-             return BadRequest();
+            return BadRequest();
 
-         
+
         }
-    
-       [HttpPost("CreateProduct")]
-        public async Task<ActionResult<string>> CreateProduct(ProductDTO request)
+
+        [HttpPost("CreateProduct")]
+        public async Task<ActionResult<string>> CreateProduct(ProductDTO request, IFormFile file)
         {
-              var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
-              var token = _AuthService.GetUserIdFromToken(_bearer_token!);
-               var users = await _UsersService.GetAsync();
-            var user = users.FirstOrDefault(u => u.Username == token);
-              if(token==null|| user==null){
-                return BadRequest("Token or User cant found");
+            var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+            var token = _AuthService.GetUserIdFromToken(_bearer_token!);
+            if (token == null)
+            {
+                return BadRequest("Token  cant found");
+            }
+            var user = await _UsersService.GetAsync(token, true);
+            if (user == null)
+            {
+                return BadRequest("User cant found");
 
-              }
-             product.Name=request.Name;
-             product.Category = request.Category;
-             product.Description = request.Description;
-             product.Price = request.Price;
-             product.Owner = token;
-              await _ProductService.CreateAsync(product);
-             user.ProductIds.Add(product.Id);
-             await _UsersService.UpdateAsync(user.Id,user);
+            }
 
-        
+            if (file != null && file.Length > 0)
+            {
+                // Generate a unique file name or use the original file name
+                string originalFileName = file.FileName; // Assuming you have the original file name
+                string extension = Path.GetExtension(originalFileName);
+                string fileName = Guid.NewGuid().ToString() + extension;
+
+                // Set the file path where you want to save the uploaded files
+                string filePath = Path.Combine(@"C:\pictures", fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                product.Picture = fileName;
+            }
+            product.Name = request.Name;
+            product.Category = request.Category;
+            product.Description = request.Description;
+            product.Price = request.Price;
+            product.Owner = token;
+            await _ProductService.CreateAsync(product);
+            user.ProductIds.Add(product.Id);
+            await _UsersService.UpdateAsync(user.Id, user);
+
+
 
             return Ok("created");
         }
+
+
         [HttpGet("GetProducts")]
         public async Task<ActionResult<string>> GeTProducts()
         {
-              var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
-              var token = _AuthService.GetUserIdFromToken(_bearer_token!);
-               var users = await _UsersService.GetAsync();
-            var user = users.FirstOrDefault(u => u.Username == token);
-              if(token==null|| user==null){
-                return BadRequest("Token or User cant found");
+            var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+            var token = _AuthService.GetUserIdFromToken(_bearer_token!);
+            if (token == null) { return BadRequest("Token cant found"); }
+            var user = await _UsersService.GetAsync(token, true);
 
-              }
-          var result =  await _ProductService.GetListAsync(user.ProductIds);
+            if (user == null)
+            {
+                return BadRequest("User cant found");
 
-        
+            }
+
+            var result = await _ProductService.GetListAsync(user.ProductIds);
+
+
 
             return Ok(result);
         }
 
 
-       
+        [HttpPut("UpdateSelf")]
+        public async Task<IActionResult> Update(string UserName, User updatedUser)
+        {
+            if (aut(UserName))
+            {
+                var User = await _UsersService.GetAsync(UserName, true);
+
+                if (User is null)
+                {
+                    return NotFound();
+                }
+
+                updatedUser.Id = User.Id;
+
+                await _UsersService.UpdateAsync(UserName, updatedUser, true);
+
+                return NoContent();
+
+
+            }
+            return BadRequest("Token or User cant found");
+
+
+        }
+
+
+
 
 
 
         //private methods
         private bool aut(string UserName)
         {
-               var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
-               var token = _AuthService.GetUserIdFromToken(_bearer_token!);
-              
-              if(UserName==token){
+            var _bearer_token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+            var token = _AuthService.GetUserIdFromToken(_bearer_token!);
+
+            if (UserName == token)
+            {
                 return true;
-              }
-            
+            }
+
             return false;
-                  
+
         }
 
     }
